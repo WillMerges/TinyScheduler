@@ -39,9 +39,10 @@ void ts_schedule(int* stop_var, int stop_cond) {
         stop_cond = 0; // just loop forever
     }
 
-    long int curr_time;
+    long int curr_time = ts_systime();
     long int best_ttid = -1;
     while(*stop_var != stop_cond) {
+        while(curr_time == ts_systime()) {}; // spinning is okay here, we have nothing better to do
         curr_time = ts_systime();
         for(size_t i = 0; i < TS_MAX_TASKS; i++) {
             if(ttid_map[i] == 1) {
