@@ -21,7 +21,7 @@ extern long int ts_systime();
 
 // priority level
 typedef enum {
-    LOW_PRIORITY, MEDIUM_PRIORITY, HIGH_PRIORITY
+    IDLE_PRIORITY, SLEEP_PRIORITY, LOW_PRIORITY, MEDIUM_PRIORITY, HIGH_PRIORITY
 } priority_t;
 
 // task structure

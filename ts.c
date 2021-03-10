@@ -46,6 +46,9 @@ void ts_schedule(int* stop_var, int stop_cond) {
         curr_time = ts_systime();
         for(size_t i = 0; i < TS_MAX_TASKS; i++) {
             if(ttid_map[i] == 1) {
+                if(tasks[i].priority == SLEEP_PRIORITY) {
+                    continue; // skip sleeping tasks
+                }
                 if(tasks[i].start_time < curr_time) {
                     if(best_ttid == -1) {
                         best_ttid = i;
