@@ -39,14 +39,18 @@ int main(int argc, char** argv) {
     t1.start_time = ts_systime();
     t1.priority = LOW_PRIORITY;
     t1.task = &task1;
+    t1.free = 0;
 
     tiny_task_t t2;
     t2.start_time = ts_systime();
     t2.priority = LOW_PRIORITY;
     t2.task = &task2;
+    t2.free = 0;
 
     ts_add(&t1);
     ts_add(&t2);
 
-    ts_schedule(NULL, 0);
+    while(1) {
+        ts_schedule();
+    }
 }

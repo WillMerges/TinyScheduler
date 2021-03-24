@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gcc -I.. ../ts.c *.c -o test -ggdb
+gcc -I.. -I../queue ../queue/queue.c ../ts.c *.c -o test -ggdb
