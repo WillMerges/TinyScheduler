@@ -22,7 +22,7 @@ void task1(tiny_task_t* t) {
         // burn some time
     }
     // schedule us to run again in 1 seconds
-    t->start_time = ts_systime() + 1;
+    t->start_time = ts_systime() - 1;
 }
 
 void task2(tiny_task_t* t) {
@@ -31,7 +31,7 @@ void task2(tiny_task_t* t) {
         // burn some time
     }
     // schedule us to run again in 2 seconds
-    t->start_time = ts_systime() + 2;
+    t->start_time = ts_systime() - 1;
 }
 
 int main(int argc, char** argv) {
@@ -48,5 +48,8 @@ int main(int argc, char** argv) {
     ts_add(&t1);
     ts_add(&t2);
 
-    ts_schedule(NULL, 0);
+    // call the scheduler forever (since we don't have a systick ISR)
+    while(1) {
+        ts_schedule();
+    }
 }

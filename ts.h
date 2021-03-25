@@ -21,7 +21,7 @@ extern long int ts_systime();
 
 // priority level
 typedef enum {
-    IDLE_PRIORITY, SLEEP_PRIORITY, LOW_PRIORITY, MEDIUM_PRIORITY, HIGH_PRIORITY
+    SLEEP_PRIORITY, IDLE_PRIORITY, LOW_PRIORITY, MEDIUM_PRIORITY, HIGH_PRIORITY
 } priority_t;
 
 // task structure
@@ -40,8 +40,8 @@ int ts_add(tiny_task_t* task);
 // remove a task from the scheduler
 void ts_rem(int ttid);
 
-// runs the scheduler
-// will not exit unless *stop_var == stop_cond
-void ts_schedule(int* stop_var, int stop_cond);
+// schedules and dispatches one task
+// generally called from the systick ISR or whatever is updating ts_systime
+void ts_schedule();
 
 #endif
