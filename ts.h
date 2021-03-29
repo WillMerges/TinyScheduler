@@ -29,7 +29,8 @@ typedef struct tiny_task tiny_task_t;
 struct tiny_task {
     int ttid; // tiny task id, set by the scheduler
     long int start_time; // requested start time, set by user, units are what ts_systime uses
-    priority_t priority; // priority level, set by user
+    priority_t default_priority; // priority level, set by user
+    priority_t priority;
     void (*task) (tiny_task_t*); // task function, defined by programmer
 };
 

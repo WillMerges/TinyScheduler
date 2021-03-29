@@ -3,21 +3,24 @@
 
 // this is in bss and should be initialized to zero
 // problems if it's not
-tiny_task_t tasks[TS_MAX_TASKS];
+tiny_task_t* tasks[TS_MAX_TASKS];
 
 // mark a ttid, used = 1, unused = 0
 unsigned char ttid_map[TS_MAX_TASKS];
 
 
 int ts_add(tiny_task_t* task) {
+    // find a free ttid
     for(int i = 0; i < TS_MAX_TASKS; i++) {
         if(ttid_map[i] == 0) {
+            task->priority = task->default_priority;
+            task->ttid = i;
             ttid_map[i] = 1;
-            tasks[i] = *task;
+            tasks[i] = task;
             return i;
         }
     }
-    return TS_ERR_TTID; // no space
+    return TS_ERR_TTID; // no ttid's available
 }
 
 void ts_rem(int ttid) {
@@ -26,7 +29,7 @@ void ts_rem(int ttid) {
         return;
     }
     // clear and mark unused
-    memset(tasks + ttid, 0, sizeof(tiny_task_t));
+    memset(tasks + ttid, 0, sizeof(tiny_task_t*));
     ttid_map[ttid] = 0;
 }
 
@@ -46,23 +49,23 @@ void ts_schedule(int* stop_var, int stop_cond) {
         curr_time = ts_systime();
         for(size_t i = 0; i < TS_MAX_TASKS; i++) {
             if(ttid_map[i] == 1) {
-                if(tasks[i].priority == SLEEP_PRIORITY) {
+                if(tasks[i]->priority == SLEEP_PRIORITY) {
                     continue; // skip sleeping tasks
                 }
-                if(tasks[i].start_time < curr_time) {
+                if(tasks[i]->start_time < curr_time) {
                     if(best_ttid == -1) {
                         best_ttid = i;
-                    } else if(tasks[i].start_time < tasks[best_ttid].start_time) {
-                        if(tasks[i].priority > tasks[best_ttid].priority) {
-                            best_ttid = i;
-                        }
+                    } else if(tasks[i]->priority > tasks[best_ttid]->priority) {
+                        tasks[best_ttid]->priority++;
+                        best_ttid = i;
                     }
                 }
             }
         }
         if(best_ttid != -1) {
-            tasks[best_ttid].start_time = curr_time - 1;
-            tasks[best_ttid].task(&tasks[best_ttid]);
+            // change the priority BEFORE calling the task so it can change it's own priority
+            tasks[best_ttid]->priority = tasks[best_ttid]->default_priority;
+            tasks[best_ttid]->task(tasks[best_ttid]);
             best_ttid = -1;
         }
     }

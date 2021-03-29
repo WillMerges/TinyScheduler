@@ -37,12 +37,12 @@ void task2(tiny_task_t* t) {
 int main(int argc, char** argv) {
     tiny_task_t t1;
     t1.start_time = ts_systime();
-    t1.priority = LOW_PRIORITY;
+    t1.default_priority = LOW_PRIORITY;
     t1.task = &task1;
 
     tiny_task_t t2;
     t2.start_time = ts_systime();
-    t2.priority = LOW_PRIORITY;
+    t2.default_priority = LOW_PRIORITY;
     t2.task = &task2;
 
     ts_add(&t1);
