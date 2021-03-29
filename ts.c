@@ -1,8 +1,12 @@
+/*
+/   Tiny Scheduler
+/
+/   Will Merges 2021
+*/
 #include "ts.h"
 #include <string.h>
 
-// this is in bss and should be initialized to zero
-// problems if it's not
+// task pointers
 tiny_task_t* tasks[TS_MAX_TASKS];
 
 // mark a ttid, used = 1, unused = 0
@@ -34,7 +38,6 @@ void ts_rem(int ttid) {
 }
 
 // not all that great of time complexity,  ¯\_(ツ)_/¯
-// always run a higher priority task regardless how far behind a lower one is
 void ts_schedule(int* stop_var, int stop_cond) {
     int dummy = 1;
     if(stop_var == NULL) {

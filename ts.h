@@ -1,11 +1,11 @@
-/**
-//  Tiny Scheduler
+/*
+/   Tiny Scheduler
 /   A low memory usage non-preemptive scheduler
 /
 /   Not very good but works for a small number of tasks
 /
 /   Will Merges 2021
-**/
+*/
 #ifndef TINY_SCHED_H
 #define TINY_SCHED_H
 
